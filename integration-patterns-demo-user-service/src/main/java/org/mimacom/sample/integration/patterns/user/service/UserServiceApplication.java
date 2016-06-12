@@ -1,8 +1,10 @@
 package org.mimacom.sample.integration.patterns.user.service;
 
 import org.mimacom.sample.integration.patterns.user.service.integration.AsyncSearchServiceIntegration;
+import org.mimacom.sample.integration.patterns.user.service.integration.BulkHeadedSearchServiceIntegration;
 import org.mimacom.sample.integration.patterns.user.service.integration.SimpleSearchServiceIntegration;
 import org.mimacom.sample.integration.patterns.user.service.web.AsyncUserController;
+import org.mimacom.sample.integration.patterns.user.service.web.BulkHeadedUserController;
 import org.mimacom.sample.integration.patterns.user.service.web.SimpleUserController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +30,7 @@ public class UserServiceApplication extends WebMvcConfigurerAdapter {
     configurer.setTaskExecutor(threadPoolTaskExecutor);
   }
 
-  @Bean
+//  @Bean
   public SimpleUserController simpleUserController(SimpleSearchServiceIntegration simpleSearchServiceIntegration) {
     return new SimpleUserController(simpleSearchServiceIntegration);
   }
@@ -36,6 +38,11 @@ public class UserServiceApplication extends WebMvcConfigurerAdapter {
 //  @Bean
   public AsyncUserController asyncUserController(AsyncSearchServiceIntegration asyncSearchServiceIntegration) {
     return new AsyncUserController(asyncSearchServiceIntegration);
+  }
+
+  @Bean
+  public BulkHeadedUserController bulkHeadedUserController(BulkHeadedSearchServiceIntegration bulkHeadedSearchServiceIntegration) {
+    return new BulkHeadedUserController(bulkHeadedSearchServiceIntegration);
   }
 
 }
