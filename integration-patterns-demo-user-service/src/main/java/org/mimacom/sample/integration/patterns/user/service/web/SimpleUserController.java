@@ -32,7 +32,6 @@ public class SimpleUserController {
   private final SimpleSearchServiceIntegration simpleSearchServiceIntegration;
   private final ConcurrentHashMap<String, User> userRepository;
 
-  @Autowired
   public SimpleUserController(SimpleSearchServiceIntegration simpleSearchServiceIntegration) {
     this.simpleSearchServiceIntegration = simpleSearchServiceIntegration;
     this.userRepository = new ConcurrentHashMap<>();

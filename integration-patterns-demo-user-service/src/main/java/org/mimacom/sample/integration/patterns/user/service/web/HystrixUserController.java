@@ -1,10 +1,7 @@
 package org.mimacom.sample.integration.patterns.user.service.web;
 
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
-import org.mimacom.sample.integration.patterns.user.service.integration.BulkHeadedSearchServiceIntegration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mimacom.sample.integration.patterns.user.service.integration.HystrixSearchServiceIntegration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,15 +22,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/users")
-public class BulkHeadedUserController {
+public class HystrixUserController {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-  private final BulkHeadedSearchServiceIntegration asyncSearchServiceIntegration;
+  private final HystrixSearchServiceIntegration hystrixSearchServiceIntegration;
   private final ConcurrentHashMap<String, User> userRepository;
 
-  public BulkHeadedUserController(BulkHeadedSearchServiceIntegration bulkHeadedSearchServiceIntegration) {
-    this.asyncSearchServiceIntegration = bulkHeadedSearchServiceIntegration;
+  public HystrixUserController(HystrixSearchServiceIntegration hystrixSearchServiceIntegration) {
+    this.hystrixSearchServiceIntegration = hystrixSearchServiceIntegration;
     this.userRepository = new ConcurrentHashMap<>();
   }
 
@@ -44,13 +38,12 @@ public class BulkHeadedUserController {
   public DeferredResult<String> createUser(@RequestBody User user, @RequestParam(required = false) Integer waitTime) {
     DeferredResult<String> deferredResult = new DeferredResult<>();
 
-    LOG.info("created user '{}' '{}'", user.getFirstName(), user.getLastName());
     this.userRepository.put(user.getId(), user);
 
     if (waitTime == null) {
-      this.asyncSearchServiceIntegration.indexUser(user, ignored -> deferredResult.setResult(user.getId()), deferredResult::setErrorResult);
+      this.hystrixSearchServiceIntegration.indexUser(user, ignored -> deferredResult.setResult(user.getId()), deferredResult::setErrorResult);
     } else {
-      this.asyncSearchServiceIntegration.indexUserSlow(user, waitTime, ignored -> deferredResult.setResult(user.getId()), deferredResult::setErrorResult);
+      this.hystrixSearchServiceIntegration.indexUserSlow(user, waitTime, ignored -> deferredResult.setResult(user.getId()), deferredResult::setErrorResult);
     }
 
     return deferredResult;
@@ -70,7 +63,7 @@ public class BulkHeadedUserController {
   @ResponseBody
   public DeferredResult<List<User>> searchUserByFirstName(@RequestParam String firstName) {
     DeferredResult<List<User>> deferredResult = new DeferredResult<>();
-    this.asyncSearchServiceIntegration.searchUserByFirstName(firstName, deferredResult::setResult, deferredResult::setErrorResult);
+    this.hystrixSearchServiceIntegration.searchUserByFirstName(firstName, deferredResult::setResult, deferredResult::setErrorResult);
 
     return deferredResult;
   }

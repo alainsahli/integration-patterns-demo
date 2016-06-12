@@ -2,9 +2,11 @@ package org.mimacom.sample.integration.patterns.user.service;
 
 import org.mimacom.sample.integration.patterns.user.service.integration.AsyncSearchServiceIntegration;
 import org.mimacom.sample.integration.patterns.user.service.integration.BulkHeadedSearchServiceIntegration;
+import org.mimacom.sample.integration.patterns.user.service.integration.HystrixSearchServiceIntegration;
 import org.mimacom.sample.integration.patterns.user.service.integration.SimpleSearchServiceIntegration;
 import org.mimacom.sample.integration.patterns.user.service.web.AsyncUserController;
 import org.mimacom.sample.integration.patterns.user.service.web.BulkHeadedUserController;
+import org.mimacom.sample.integration.patterns.user.service.web.HystrixUserController;
 import org.mimacom.sample.integration.patterns.user.service.web.SimpleUserController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,9 +42,14 @@ public class UserServiceApplication extends WebMvcConfigurerAdapter {
     return new AsyncUserController(asyncSearchServiceIntegration);
   }
 
-  @Bean
+//  @Bean
   public BulkHeadedUserController bulkHeadedUserController(BulkHeadedSearchServiceIntegration bulkHeadedSearchServiceIntegration) {
     return new BulkHeadedUserController(bulkHeadedSearchServiceIntegration);
+  }
+
+  @Bean
+  public HystrixUserController hystrixUserController(HystrixSearchServiceIntegration hystrixSearchServiceIntegration) {
+    return new HystrixUserController(hystrixSearchServiceIntegration);
   }
 
 }

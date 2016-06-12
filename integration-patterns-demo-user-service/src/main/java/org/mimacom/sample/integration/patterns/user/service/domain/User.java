@@ -15,6 +15,12 @@ public class User {
     this.lastName = null;
   }
 
+  public User(String firstName, String lastName) {
+    this.id = generateId();
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
   public String getId() {
     return id;
   }

@@ -33,7 +33,6 @@ public class AsyncUserController {
   private final AsyncSearchServiceIntegration asyncSearchServiceIntegration;
   private final ConcurrentHashMap<String, User> userRepository;
 
-  @Autowired
   public AsyncUserController(AsyncSearchServiceIntegration asyncSearchServiceIntegration) {
     this.asyncSearchServiceIntegration = asyncSearchServiceIntegration;
     this.userRepository = new ConcurrentHashMap<>();
