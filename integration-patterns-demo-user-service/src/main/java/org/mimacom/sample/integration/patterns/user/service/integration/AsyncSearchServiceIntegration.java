@@ -70,6 +70,7 @@ public class AsyncSearchServiceIntegration {
     ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
     threadPoolTaskExecutor.setCorePoolSize(2);
     threadPoolTaskExecutor.setMaxPoolSize(2);
+    threadPoolTaskExecutor.setThreadNamePrefix("SearchServiceIntegration-");
     threadPoolTaskExecutor.afterPropertiesSet();
 
     return new AsyncRestTemplate(threadPoolTaskExecutor);

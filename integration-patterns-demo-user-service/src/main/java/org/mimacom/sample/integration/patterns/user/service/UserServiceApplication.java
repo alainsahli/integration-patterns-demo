@@ -32,7 +32,7 @@ public class UserServiceApplication extends WebMvcConfigurerAdapter {
     configurer.setTaskExecutor(threadPoolTaskExecutor);
   }
 
-//  @Bean
+  @Bean
   public SimpleUserController simpleUserController(SimpleSearchServiceIntegration simpleSearchServiceIntegration) {
     return new SimpleUserController(simpleSearchServiceIntegration);
   }
@@ -47,7 +47,7 @@ public class UserServiceApplication extends WebMvcConfigurerAdapter {
     return new BulkHeadedUserController(bulkHeadedSearchServiceIntegration);
   }
 
-  @Bean
+//  @Bean
   public HystrixUserController hystrixUserController(HystrixSearchServiceIntegration hystrixSearchServiceIntegration) {
     return new HystrixUserController(hystrixSearchServiceIntegration);
   }

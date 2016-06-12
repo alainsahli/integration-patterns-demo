@@ -30,8 +30,8 @@ public class BulkHeadedSearchServiceIntegration {
   @Autowired
   public BulkHeadedSearchServiceIntegration(@Value("${search-service-url}") String searchServiceUrl) {
     this.searchServiceUrl = searchServiceUrl;
-    this.asyncSearchRestTemplate = initializeRestTemplate();
-    this.asyncIndexRestTemplate = initializeRestTemplate();
+    this.asyncSearchRestTemplate = initializeRestTemplate("SearchUser-");
+    this.asyncIndexRestTemplate = initializeRestTemplate("IndexUser-");
   }
 
   public void indexUser(User user, Consumer<Void> successConsumer, Consumer<Throwable> failureConsumer) {
@@ -68,10 +68,11 @@ public class BulkHeadedSearchServiceIntegration {
 
   }
 
-  private static AsyncRestTemplate initializeRestTemplate() {
+  private static AsyncRestTemplate initializeRestTemplate(String threadNamePrefix) {
     ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
     threadPoolTaskExecutor.setCorePoolSize(2);
     threadPoolTaskExecutor.setMaxPoolSize(2);
+    threadPoolTaskExecutor.setThreadNamePrefix(threadNamePrefix);
     threadPoolTaskExecutor.afterPropertiesSet();
 
     return new AsyncRestTemplate(threadPoolTaskExecutor);
