@@ -20,7 +20,7 @@
   </modules>
   <packaging>pom</packaging>
 
-  <name>Integration Patterns Demo1</name>
+  <name>Integration Patterns Demo</name>
   <description>Demo of different integration patterns</description>
 
   <properties>
@@ -34,6 +34,13 @@
         <groupId>com.netflix.hystrix</groupId>
         <artifactId>hystrix-core</artifactId>
         <version>1.5.3</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jms</artifactId>
+        <version>4.2.6.RELEASE</version>
+        <scope>runtime</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

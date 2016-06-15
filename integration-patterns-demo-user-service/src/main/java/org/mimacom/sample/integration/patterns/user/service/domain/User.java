@@ -22,15 +22,15 @@ public class User {
   }
 
   public String getId() {
-    return id;
+    return this.id;
   }
 
   public String getFirstName() {
-    return firstName;
+    return this.firstName;
   }
 
   public String getLastName() {
-    return lastName;
+    return this.lastName;
   }
 
   private static String generateId() {

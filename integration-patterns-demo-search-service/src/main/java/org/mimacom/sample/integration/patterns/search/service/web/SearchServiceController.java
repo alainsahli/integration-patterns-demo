@@ -1,8 +1,10 @@
 package org.mimacom.sample.integration.patterns.search.service.web;
 
 import org.mimacom.sample.integration.patterns.search.service.document.User;
+import org.mimacom.sample.integration.patterns.search.service.service.SearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -23,10 +22,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SearchServiceController {
 
   private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-  private final Map<String, User> userIndex;
+  private final SearchService searchService;
 
-  public SearchServiceController() {
-    this.userIndex = new ConcurrentHashMap<>();
+  @Autowired
+  public SearchServiceController(SearchService searchService) {
+    this.searchService = searchService;
   }
 
   @ResponseStatus(OK)
@@ -38,19 +38,12 @@ public class SearchServiceController {
       waitFor(waitTime);
     }
 
-    indexUser(user);
+    this.searchService.indexUser(user);
   }
 
   @RequestMapping(value = "/search-by-firstname", method = GET)
   public List<User> searchUserByFirstName(@RequestParam String firstName) {
-    return this.userIndex.entrySet().stream()
-        .filter(entry -> entry.getKey().startsWith(firstName))
-        .map(Map.Entry::getValue)
-        .collect(toList());
-  }
-
-  private void indexUser(User user) {
-    this.userIndex.put(user.getFirstName(), user);
+    return this.searchService.searchUserByFirstName(firstName);
   }
 
   private static void waitFor(int waitTimeInSeconds) {

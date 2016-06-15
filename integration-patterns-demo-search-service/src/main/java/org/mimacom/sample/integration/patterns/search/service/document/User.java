@@ -1,8 +1,6 @@
 package org.mimacom.sample.integration.patterns.search.service.document;
 
 
-import static java.util.UUID.randomUUID;
-
 public class User {
 
   private final String id;
@@ -10,25 +8,27 @@ public class User {
   private final String lastName;
 
   protected User() {
-    this.id = generateId();
+    this.id = null;
     this.firstName = null;
     this.lastName = null;
   }
 
+  public User(String id, String firstName, String lastName) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
   public String getId() {
-    return id;
+    return this.id;
   }
 
   public String getFirstName() {
-    return firstName;
+    return this.firstName;
   }
 
   public String getLastName() {
-    return lastName;
-  }
-
-  private static String generateId() {
-    return randomUUID().toString();
+    return this.lastName;
   }
 
 }

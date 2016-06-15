@@ -75,9 +75,9 @@ public class HystrixSearchServiceIntegration {
 
     @Override
     protected Void run() throws Exception {
-      LOG.info("going to send request to index user '{}' '{}'", user.getFirstName(), user.getLastName());
+      LOG.info("going to send request to index user '{}' '{}'", this.user.getFirstName(), this.user.getLastName());
       this.restTemplate.postForEntity(this.url, this.user, String.class);
-      LOG.info("user '{}' '{}' was indexed", user.getFirstName(), user.getLastName());
+      LOG.info("user '{}' '{}' was indexed", this.user.getFirstName(), this.user.getLastName());
 
       return null;
     }
@@ -112,7 +112,7 @@ public class HystrixSearchServiceIntegration {
     @Override
     protected List<User> run() throws Exception {
       LOG.info("sending request to search service");
-      ResponseEntity<User[]> response = this.restTemplate.getForEntity(this.searchServiceUrl + "/search-by-firstname?firstName={firstName}", User[].class, firstName);
+      ResponseEntity<User[]> response = this.restTemplate.getForEntity(this.searchServiceUrl + "/search-by-firstname?firstName={firstName}", User[].class, this.firstName);
       LOG.info("search service returned a result");
 
       return asList(response.getBody());
