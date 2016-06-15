@@ -10,7 +10,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>org.mimacom.sample</groupId>
+  <groupId>org.sahli.samples</groupId>
   <artifactId>integration-patterns-demo</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
