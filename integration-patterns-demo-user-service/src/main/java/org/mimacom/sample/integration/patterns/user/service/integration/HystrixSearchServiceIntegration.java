@@ -5,10 +5,7 @@ import com.netflix.hystrix.HystrixCommandProperties;
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.invoke.MethodHandles;
@@ -19,16 +16,12 @@ import static com.netflix.hystrix.HystrixCommandGroupKey.Factory.asKey;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
-@Service
 public class HystrixSearchServiceIntegration {
-
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final String searchServiceUrl;
   private final RestTemplate restTemplate;
 
-  @Autowired
-  public HystrixSearchServiceIntegration(@Value("${search-service-url}") String searchServiceUrl) {
+  public HystrixSearchServiceIntegration(String searchServiceUrl) {
     this.searchServiceUrl = searchServiceUrl;
     this.restTemplate = new RestTemplate();
   }
@@ -55,7 +48,7 @@ public class HystrixSearchServiceIntegration {
 
   private static class IndexUserHystrixCommand extends HystrixCommand<Void> {
 
-    private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final RestTemplate restTemplate;
     private final User user;
@@ -92,7 +85,7 @@ public class HystrixSearchServiceIntegration {
 
   private static class SearchUserByFirstNameHystrixCommand extends HystrixCommand<List<User>> {
 
-    private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final RestTemplate restTemplate;
     private final String searchServiceUrl;

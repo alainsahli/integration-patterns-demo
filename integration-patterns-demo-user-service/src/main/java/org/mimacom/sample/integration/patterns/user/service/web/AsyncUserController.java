@@ -4,7 +4,6 @@ import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.mimacom.sample.integration.patterns.user.service.integration.AsyncSearchServiceIntegration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +25,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/users")
+@ResponseBody
 public class AsyncUserController {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final AsyncSearchServiceIntegration asyncSearchServiceIntegration;
   private final ConcurrentHashMap<String, User> userRepository;
@@ -40,7 +40,6 @@ public class AsyncUserController {
 
   @ResponseStatus(CREATED)
   @RequestMapping(method = POST)
-  @ResponseBody
   public DeferredResult<String> createUser(@RequestBody User user, @RequestParam(required = false) Integer waitTime) {
     DeferredResult<String> deferredResult = new DeferredResult<>();
 
@@ -57,7 +56,6 @@ public class AsyncUserController {
   }
 
   @RequestMapping(value = "/{id}", method = GET)
-  @ResponseBody
   public ResponseEntity<?> getUser(@PathVariable String id) {
     if (this.userRepository.containsKey(id)) {
       return new ResponseEntity<>(this.userRepository.get(id), OK);
@@ -67,7 +65,6 @@ public class AsyncUserController {
   }
 
   @RequestMapping(value = "/search-by-firstname")
-  @ResponseBody
   public DeferredResult<List<User>> searchUserByFirstName(@RequestParam String firstName) {
     DeferredResult<List<User>> deferredResult = new DeferredResult<>();
     this.asyncSearchServiceIntegration.searchUserByFirstName(firstName, deferredResult::setResult, deferredResult::setErrorResult);

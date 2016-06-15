@@ -3,16 +3,12 @@ package org.mimacom.sample.integration.patterns.user.service.integration;
 
 import org.mimacom.sample.integration.patterns.search.service.messages.IndexUserMessage;
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
-import org.springframework.stereotype.Service;
 
-@Service
 public class JmsBasedIndexServiceIntegration {
 
   private final JmsMessagingTemplate jmsMessagingTemplate;
 
-  @Autowired
   public JmsBasedIndexServiceIntegration(JmsMessagingTemplate jmsMessagingTemplate) {
     this.jmsMessagingTemplate = jmsMessagingTemplate;
   }

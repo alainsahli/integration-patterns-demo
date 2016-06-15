@@ -4,20 +4,16 @@ import org.mimacom.sample.integration.patterns.search.service.document.User;
 import org.mimacom.sample.integration.patterns.search.service.messages.IndexUserMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
 
-@Service
 public class IndexUserListenerEndpoint {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final SearchService searchService;
 
-  @Autowired
   public IndexUserListenerEndpoint(SearchService searchService) {
     this.searchService = searchService;
   }

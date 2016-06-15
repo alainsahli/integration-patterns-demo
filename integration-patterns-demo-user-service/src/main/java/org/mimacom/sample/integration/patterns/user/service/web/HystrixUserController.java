@@ -22,6 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/users")
+@ResponseBody
 public class HystrixUserController {
 
   private final HystrixSearchServiceIntegration hystrixSearchServiceIntegration;
@@ -34,7 +35,6 @@ public class HystrixUserController {
 
   @ResponseStatus(CREATED)
   @RequestMapping(method = POST)
-  @ResponseBody
   public DeferredResult<String> createUser(@RequestBody User user, @RequestParam(required = false) Integer waitTime) {
     DeferredResult<String> deferredResult = new DeferredResult<>();
 
@@ -50,7 +50,6 @@ public class HystrixUserController {
   }
 
   @RequestMapping(value = "/{id}", method = GET)
-  @ResponseBody
   public ResponseEntity<?> getUser(@PathVariable String id) {
     if (this.userRepository.containsKey(id)) {
       return new ResponseEntity<>(this.userRepository.get(id), OK);
@@ -60,7 +59,6 @@ public class HystrixUserController {
   }
 
   @RequestMapping(value = "/search-by-firstname")
-  @ResponseBody
   public DeferredResult<List<User>> searchUserByFirstName(@RequestParam String firstName) {
     DeferredResult<List<User>> deferredResult = new DeferredResult<>();
     this.hystrixSearchServiceIntegration.searchUserByFirstName(firstName, deferredResult::setResult, deferredResult::setErrorResult);

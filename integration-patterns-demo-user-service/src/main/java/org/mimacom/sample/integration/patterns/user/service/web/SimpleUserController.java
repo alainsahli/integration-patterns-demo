@@ -4,7 +4,6 @@ import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.mimacom.sample.integration.patterns.user.service.integration.SimpleSearchServiceIntegration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,9 +24,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/users")
+@ResponseBody
 public class SimpleUserController {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final SimpleSearchServiceIntegration simpleSearchServiceIntegration;
   private final ConcurrentHashMap<String, User> userRepository;
@@ -39,7 +39,6 @@ public class SimpleUserController {
 
   @ResponseStatus(CREATED)
   @RequestMapping(method = POST)
-  @ResponseBody
   public String createUser(@RequestBody User user, @RequestParam(required = false) Integer waitTime) {
     LOG.info("created user '{}' '{}'", user.getFirstName(), user.getLastName());
     this.userRepository.put(user.getId(), user);
@@ -54,7 +53,6 @@ public class SimpleUserController {
   }
 
   @RequestMapping(value = "/{id}", method = GET)
-  @ResponseBody
   public ResponseEntity<?> getUser(@PathVariable String id) {
     if (this.userRepository.containsKey(id)) {
       return new ResponseEntity<>(this.userRepository.get(id), OK);
@@ -64,7 +62,6 @@ public class SimpleUserController {
   }
 
   @RequestMapping(value = "/search-by-firstname")
-  @ResponseBody
   public List<User> searchUserByFirstName(@RequestParam String firstName) {
     return this.simpleSearchServiceIntegration.searchUserByFirstName(firstName);
   }

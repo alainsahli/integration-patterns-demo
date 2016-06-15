@@ -3,12 +3,9 @@ package org.mimacom.sample.integration.patterns.user.service.integration;
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 
@@ -18,16 +15,14 @@ import java.util.function.Consumer;
 
 import static java.util.Arrays.asList;
 
-@Service
 public class AsyncSearchServiceIntegration {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final String searchServiceUrl;
   private final AsyncRestTemplate asyncRestTemplate;
 
-  @Autowired
-  public AsyncSearchServiceIntegration(@Value("${search-service-url}") String searchServiceUrl) {
+  public AsyncSearchServiceIntegration(String searchServiceUrl) {
     this.searchServiceUrl = searchServiceUrl;
     this.asyncRestTemplate = initializeRestTemplate();
   }
@@ -60,9 +55,7 @@ public class AsyncSearchServiceIntegration {
   public void searchUserByFirstName(String firstName, Consumer<List<User>> successConsumer, Consumer<Throwable> failureConsumer) {
     ListenableFuture<ResponseEntity<User[]>> listenableFuture = this.asyncRestTemplate.getForEntity(this.searchServiceUrl + "/search-by-firstname?firstName={firstName}", User[].class, firstName);
 
-    listenableFuture.addCallback(result -> {
-      successConsumer.accept(asList(result.getBody()));
-    }, failureConsumer::accept);
+    listenableFuture.addCallback(result -> successConsumer.accept(asList(result.getBody())), failureConsumer::accept);
 
   }
 

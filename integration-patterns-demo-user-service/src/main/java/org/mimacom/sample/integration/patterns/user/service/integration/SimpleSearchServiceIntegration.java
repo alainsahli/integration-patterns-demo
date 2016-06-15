@@ -3,10 +3,7 @@ package org.mimacom.sample.integration.patterns.user.service.integration;
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.invoke.MethodHandles;
@@ -14,16 +11,14 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-@Service
 public class SimpleSearchServiceIntegration {
 
-  private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final String searchServiceUrl;
   private final RestTemplate restTemplate;
 
-  @Autowired
-  public SimpleSearchServiceIntegration(@Value("${search-service-url}")String searchServiceUrl) {
+  public SimpleSearchServiceIntegration(String searchServiceUrl) {
     this.searchServiceUrl = searchServiceUrl;
     this.restTemplate = new RestTemplate();
   }
