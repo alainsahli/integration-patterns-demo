@@ -40,7 +40,7 @@ This way it should be possible to send requests to tomcat and get a quick respon
    and the two search service integration threads (SearchServiceIntegration-1 and SearchServiceIntegration-2).
 4. Create two users with a long wait time (in parallel, i.e. in two shells simultaneously): _./scripts/create-user.sh 60_.
 5. Try to get a user by id (while the two user creation scripts are running) and assert that a response is quickly coming because the tomcat worker threads are now free.
-6. Try to search for a user (while the two user creation scripts are running) _./scripts/search-user-by-firstname.sh Hom_ and assert that no response is coming because all tomcat worker threads are busy.
+6. Try to search for a user (while the two user creation scripts are running) _./scripts/search-user-by-firstname.sh Hom_ and assert that no response is coming because all search service integration threads are busy.
 
 ### Use case 3: Async Integration With Bulkheads
 In use case 2 we have seen that when only one thread pool is used to send requests to an external application and one type of request is slow (create user) it brings
