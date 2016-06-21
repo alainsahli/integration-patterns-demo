@@ -77,7 +77,7 @@ the circuit is closed again.
 
 ### Use Case 5: Reliable Integration With Queues
 In use case 4 almost everything is good except that when a user is created and the search service is not available it is not going to be indexed. To solve that a persistent
-messaging solution must be used to assure that the indexation of the user will happen at least once. To implement that we will create a local message brokers using AcitveMQ
+messaging solution must be used to assure that the indexation of the user will happen at least once. To implement that we will create local message brokers using AcitveMQ
 in the user application and search application. Every local message broker has its own database and the brokers are connected together using the network transportation feature
 of ActiveMQ. This way when a user is created a message is published and persisted and if the search application is not available it will be replayed as soon as it is available
 again.
@@ -86,7 +86,7 @@ again.
 2. Check that everything works fine by running _./scripts/create-user.sh_ and then searching for it _./scripts/search-user-by-firstname.sh Hom_.
 3. Stop the search application
 4. Create a user _./scripts/create-user.sh_.
-5. Start the search application and check the logs to assert that the newly created user is immediately create after startup. 
+5. Start the search application and check the logs to assert that the newly created user is immediately created after startup. 
 6. Try to search for a user _./scripts/search-user-by-firstname.sh Hom_ and assert that a response is quickly coming.
 7. Optionally throw an exception in the [listener endpoint](https://github.com/alainsahli/integration-patterns-demo/blob/master/integration-patterns-demo-search-service/src/main/java/org/mimacom/sample/integration/patterns/search/service/service/IndexUserListenerEndpoint.java#L39)
    and create a user. ActiveMQ will do some retries and the message will land in a dead letter queue.
