@@ -79,7 +79,10 @@ public class SearchServiceApplication {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-      return new ActiveMQConnectionFactory("vm://localhost");
+      ActiveMQConnectionFactory activeMqConnectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+      activeMqConnectionFactory.getRedeliveryPolicy().setMaximumRedeliveries(3);
+
+      return activeMqConnectionFactory;
     }
 
     @Bean
