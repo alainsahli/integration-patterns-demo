@@ -37,6 +37,12 @@
         <scope>runtime</scope>
       </dependency>
       <dependency>
+        <groupId>com.netflix.hystrix</groupId>
+        <artifactId>hystrix-servo-metrics-publisher</artifactId>
+        <version>1.1.2</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-jms</artifactId>
         <version>4.2.6.RELEASE</version>

@@ -18,6 +18,8 @@ package org.mimacom.sample.integration.patterns.user.service.integration;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.contrib.servopublisher.HystrixServoMetricsPublisher;
+import com.netflix.hystrix.strategy.HystrixPlugins;
 import org.mimacom.sample.integration.patterns.user.service.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,12 @@ public class HystrixSearchServiceIntegration {
   public HystrixSearchServiceIntegration(String searchServiceUrl) {
     this.searchServiceUrl = searchServiceUrl;
     this.restTemplate = new RestTemplate();
+    exposeMetricsOnJmx();
+  }
+
+  private static void exposeMetricsOnJmx() {
+    HystrixPlugins.getInstance().registerMetricsPublisher(
+        HystrixServoMetricsPublisher.getInstance());
   }
 
   public void indexUser(User user, Consumer<Void> successConsumer, Consumer<Throwable> failureConsumer) {
